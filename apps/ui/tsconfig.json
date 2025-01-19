@@ -27,7 +27,10 @@
     "types": [
       "jest",
       "node"
-    ]
+    ],
+    "paths": {
+      "@/*": ["./apps/ui/*"]
+    },
   },
   "include": [
     "**/*.ts",

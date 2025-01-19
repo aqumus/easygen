@@ -6,6 +6,7 @@ The goal is to create a simple and easy to use Auth based API and a UI demo.
 ### Future plans
 
 - [ ] Configure NestJS to use Swc
+- [ ] Export nest API types to frontend using swagger and openapi-generator
 - [ ] Configure login workflow to use cookie based authentication
 - [ ] Add API documentation
 - [ ] Add CI/CD
