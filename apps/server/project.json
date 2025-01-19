@@ -19,7 +19,7 @@
     },
     "serve": {
       "executor": "@nx/js:node",
-      "defaultConfiguration": "development",
+      "defaultConfiguration": "production",
       "dependsOn": ["build"],
       "options": {
         "buildTarget": "server:build",
@@ -31,6 +31,20 @@
         },
         "production": {
           "buildTarget": "server:build:production"
+        }
+      }
+    },
+    "dev": {
+      "executor": "@nx/js:node",
+      "defaultConfiguration": "development",
+      "dependsOn": ["build"],
+      "options": {
+        "buildTarget": "server:build:development",
+        "runBuildTargetDependencies": false
+      },
+      "configurations": {
+        "development": {
+          "buildTarget": "server:build:development"
         }
       }
     },

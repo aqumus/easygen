@@ -5,7 +5,6 @@ The goal is to create a simple and easy to use Auth based API and a UI demo.
 
 ### Future plans
 
-- [ ] Configure NestJS to Fastify Adapter
 - [ ] Configure NestJS to use Swc
 - [ ] Configure login workflow to use cookie based authentication
 - [ ] Add API documentation
@@ -21,16 +20,16 @@ The goal is to create a simple and easy to use Auth based API and a UI demo.
 
 1. Clone the repository
 2. Run `npm install`
-3. Run `npx nx dev:ui` (this will start the NextJS frontend)
-4. Run `npx nx serve:server` (this will start the NestJS backend)
+3. Run `npx nx dev ui` (this will start the NextJS frontend)
+4. Run `npx nx dev server` (this will start the NestJS backend)
 
 ### Build
 
-To build the project, run `npx nx build:server` (this will build the NestJS backend) and `npx nx build:ui` (this will build the NextJS frontend).
+To build the project, run `npx nx build server` (this will build the NestJS backend) and `npx nx build ui` (this will build the NextJS frontend).
 
 ### Run
 
-To run the project, run `npx nx serve:server` (this will start the NestJS backend) and `npx nx start:ui` (this will start the NextJS frontend).
+To run the project, run `npx nx serve server` (this will start the NestJS backend) and `npx nx start ui` (this will start the NextJS frontend).
 
 To see all available targets to run for a project, run:
 "npx nx show project <app-name>
