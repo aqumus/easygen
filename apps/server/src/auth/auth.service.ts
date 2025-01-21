@@ -44,6 +44,6 @@ export class AuthService {
   }
 
   async getProfile(user: UserTokenPayload) {
-    return this.usersService.findOne(user.email);
+    return user;
   }
 }

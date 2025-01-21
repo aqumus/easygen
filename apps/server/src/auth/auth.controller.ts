@@ -5,12 +5,15 @@ import {
   Get,
   UseGuards,
   Body,
+  UseInterceptors,
+  ClassSerializerInterceptor,
 } from '@nestjs/common';
 import { AuthService, UserTokenPayload } from './auth.service';
 import { FastifyRequest } from 'fastify';
 import { LocalAuthGuard } from './local-auth.guard';
 import { JwtAuthGuard } from './jwt-auth.guard';
 import { SignupDto } from './auth.dto';
+import { UserEntity } from '../users/user.dto';
 
 @Controller('auth')
 export class AuthController {
@@ -33,9 +36,10 @@ export class AuthController {
     return this.authService.logout(req.user);
   }
 
+  @UseInterceptors(ClassSerializerInterceptor)
   @UseGuards(JwtAuthGuard)
   @Get('profile')
   getProfile(@Request() req: FastifyRequest & { user: UserTokenPayload }) {
-    return this.authService.getProfile(req.user);
+    return new UserEntity(req.user);
   }
 }
