@@ -15,6 +15,7 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
   }
 
   async validate(payload: any) {
+    // TODO: check token  is valid from revoked list
     try {
       const user = await this.usersService.findOne(payload.email);
       return user;

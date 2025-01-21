@@ -1,6 +1,10 @@
-import { queryOptions, useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { getUser, login, register, logout } from "../api/auth";
-
+import {
+  queryOptions,
+  useMutation,
+  useQuery,
+  useQueryClient,
+} from '@tanstack/react-query';
+import { getUser, login, register, logout } from '../api/auth';
 
 const userQueryKey = ['user'];
 
@@ -24,7 +28,7 @@ export const useLogin = ({ onSuccess }: { onSuccess?: () => void }) => {
   });
 };
 
-export const useRegister = ({ onSuccess }: { onSuccess?: () => void }) => {
+export const useSignup = ({ onSuccess }: { onSuccess?: () => void }) => {
   const queryClient = useQueryClient();
   return useMutation({
     mutationFn: register,

@@ -3,16 +3,16 @@
 import { useRouter, useSearchParams } from 'next/navigation';
 
 import { paths } from '@/config/paths';
-import { RegisterForm } from '@/features/auth/components/register-form';
+import { SignupForm } from '@/features/auth/components/signup-form';
 
-const RegisterPage = () => {
+const SignupPage = () => {
   const router = useRouter();
 
   const searchParams = useSearchParams();
   const redirectTo = searchParams?.get('redirectTo');
 
   return (
-    <RegisterForm
+    <SignupForm
       onSuccess={() =>
         router.replace(
           `${redirectTo ? `${decodeURIComponent(redirectTo)}` : paths.home.getHref()}`,
@@ -22,4 +22,4 @@ const RegisterPage = () => {
   );
 };
 
-export default RegisterPage;
+export default SignupPage;

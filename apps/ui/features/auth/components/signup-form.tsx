@@ -6,17 +6,17 @@ import * as React from 'react';
 
 import { Button, Form, Input } from '@/components';
 import { paths } from '@/config/paths';
-import { useRegister } from '@/features/auth/hooks/auth';
-import { registerInputSchema } from '../api/auth';
+import { useSignup } from '@/features/auth/hooks/auth';
+import { signupInputSchema } from '../api/auth';
 
-type RegisterFormProps = {
+type SignupFormProps = {
   onSuccess: () => void;
 };
 
-export const RegisterForm = ({
+export const SignupForm = ({
   onSuccess,
-}: RegisterFormProps) => {
-  const registering = useRegister({ onSuccess });
+}: SignupFormProps) => {
+  const registering = useSignup({ onSuccess });
   const searchParams = useSearchParams();
   const redirectTo = searchParams?.get('redirectTo');
 
@@ -26,7 +26,7 @@ export const RegisterForm = ({
         onSubmit={(values) => {
           registering.mutate(values);
         }}
-        schema={registerInputSchema}
+        schema={signupInputSchema}
         options={{
           shouldUnregister: true,
         }}
@@ -58,7 +58,7 @@ export const RegisterForm = ({
                 type="submit"
                 className="w-full"
               >
-                Register
+                Signup
               </Button>
             </div>
           </>

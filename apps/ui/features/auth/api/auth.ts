@@ -1,13 +1,13 @@
 import { z } from 'zod';
 import { AuthResponse, User } from '@/types';
-  
+
 import { api } from '@/client-api/fetchApi';
 
 // api call definitions for auth (types, schemas, requests):
 // these are not part of features as this is a module shared across features
 
 export const getUser = async (): Promise<User> => {
-  const response = (await api.get('/auth/me')) as { data: User };
+  const response = (await api.get('/auth/profile')) as { data: User };
   return response.data;
 
   // return {
@@ -19,13 +19,12 @@ export const getUser = async (): Promise<User> => {
   // };
 };
 
-
 export const loginInputSchema = z.object({
-    email: z.string().min(1, 'Required').email('Invalid email'),
-    password: z.string().min(5, 'Required'),
-  });
-  
-  export type LoginInput = z.infer<typeof loginInputSchema>;
+  email: z.string().min(1, 'Required').email('Invalid email'),
+  password: z.string().min(5, 'Required'),
+});
+
+export type LoginInput = z.infer<typeof loginInputSchema>;
 
 export const login = (data: LoginInput): Promise<AuthResponse> => {
   return api.post('/auth/login', data);
@@ -35,15 +34,13 @@ export const logout = (): Promise<void> => {
   return api.post('/auth/logout');
 };
 
-
-export const registerInputSchema = z
-  .object({
-    email: z.string().email({ message: 'Please enter a valid email.' }).trim(),
-    name: z
+export const signupInputSchema = z.object({
+  email: z.string().email({ message: 'Please enter a valid email.' }).trim(),
+  name: z
     .string()
     .min(2, { message: 'Name must be at least 2 characters long.' })
     .trim(),
-    password: z
+  password: z
     .string()
     .min(8, { message: 'Be at least 8 characters long' })
     .regex(/[a-zA-Z]/, { message: 'Contain at least one letter.' })
@@ -52,12 +49,10 @@ export const registerInputSchema = z
       message: 'Contain at least one special character.',
     })
     .trim(),
-  });
+});
 
-export type RegisterInput = z.infer<typeof registerInputSchema>;
+export type SignupInput = z.infer<typeof signupInputSchema>;
 
-export const register = (
-  data: RegisterInput,
-): Promise<AuthResponse> => {
-  return api.post('/auth/register', data);
+export const register = (data: SignupInput): Promise<AuthResponse> => {
+  return api.post('/auth/signup', data);
 };

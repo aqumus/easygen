@@ -19,7 +19,8 @@ async function bootstrap() {
   );
   await app.register(helmet);
   app.enableCors({
-    origin: 'http://localhost:3000',
+    origin: true,
+    credentials: true,
   });
 
   app.useGlobalPipes(
