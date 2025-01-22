@@ -12,8 +12,10 @@ The goal is to create a simple and easy to use Auth based API and a UI demo.
 
 1. Clone the repository
 2. Run `npm install`
-3. Run `npx nx dev ui` (this will start the NextJS frontend)
-4. Run `npx nx dev server` (this will start the NestJS backend)
+3. Create `.env.local` in apps/ui and add `API_URL=http://localhost:3500` env var to set backend server API
+4. Create `.env.local` in apps/server and add `JWT_SECRET` and `SESSION_SECRET` env var with randomly generated secret keys (To generate random secret keys run `openssl rand -base64 36` in mac terminal)
+5. Run `npx nx dev ui` (this will start the NextJS frontend)
+6. Run `npx nx dev server` (this will start the NestJS backend)
 
 ### Build
 
@@ -44,6 +46,13 @@ To run the NextJS frontend
 ```sh
 npx nx start ui
 ```
+
+### Hosting
+
+- To host server, make sure to add `JWT_SECRET` and `SESSION_SECRET` environment variables
+- To host UI, make sure to add `API_URL` environment variable that would point to hosted server URL
+
+### Miscellaneous
 
 To see all available targets to run for a project, run:
 "npx nx show project <app-name>
