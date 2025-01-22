@@ -12,16 +12,6 @@ export class JwtAuthGuard extends AuthGuard('jwt') {
     if (request.isAuthenticated()) {
       return true;
     }
-    const result = (await super.canActivate(context)) as boolean;
-    await super.logIn(request);
-    return result;
-  }
-
-  handleRequest(err, user, info) {
-    // You can throw an exception based on either "info" or "err" arguments
-    if (err || !user) {
-      throw err || new UnauthorizedException();
-    }
-    return user;
+    return super.canActivate(context) as boolean;
   }
 }
