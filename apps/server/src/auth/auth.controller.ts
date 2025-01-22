@@ -33,6 +33,7 @@ export class AuthController {
   @UseGuards(JwtAuthGuard)
   @Post('logout')
   async logout(@Request() req: FastifyRequest & { user: UserTokenPayload }) {
+    req.session.destroy();
     return this.authService.logout(req.user);
   }
 
