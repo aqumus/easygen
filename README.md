@@ -54,9 +54,6 @@ These targets are either [inferred automatically](https://nx.dev/concepts/inferr
 - TailwindCSS for styling
 - Shadcn UI for UI components
 
-- [NestJS](https://nx.dev/packages/nest?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
-- [NextJS](https://nx.dev/packages/next?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
-
 #### Backend
 
 - NestJS based API server
