@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, Logger } from '@nestjs/common';
 import { SignupDto } from '../auth/auth.dto';
 
 // This should be a real class/interface representing a user entity
@@ -6,6 +6,7 @@ export type User = any;
 
 @Injectable()
 export class UsersService {
+  private readonly logger = new Logger(UsersService.name);
   private readonly users = [
     {
       userId: '1',

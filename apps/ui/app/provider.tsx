@@ -1,12 +1,7 @@
 'use client';
 
 import { QueryClient, QueryClientProvider, isServer } from '@tanstack/react-query';
-import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 import * as React from 'react';
-import { ErrorBoundary } from 'react-error-boundary';
-
-import { MainErrorFallback } from '@/components/errors/main';
-import { queryConfig } from '@/config/react-query';
 
 type AppProviderProps = {
   children: React.ReactNode;
@@ -41,21 +36,6 @@ function getQueryClient() {
 }
 
 export const AppProvider = ({ children }: AppProviderProps) => {
-  // const [queryClient] = React.useState(
-  //   () =>
-  //     new QueryClient({
-  //       defaultOptions: queryConfig,
-  //     }),
-  // );
-
-  // return (
-  //   <ErrorBoundary FallbackComponent={MainErrorFallback}>
-  //     <QueryClientProvider client={queryClient}>
-  //       {process.env.DEV && <ReactQueryDevtools />}
-  //       {children}
-  //     </QueryClientProvider>
-  //   </ErrorBoundary>
-  // );
 
     // NOTE: Avoid useState when initializing the query client if you don't
   //       have a suspense boundary between this and the code that may

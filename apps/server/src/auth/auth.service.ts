@@ -34,16 +34,13 @@ export class AuthService {
       ...body,
       password: hashedPassword,
     });
-    return this.login({
-      email: user.email,
-      userId: user.userId,
-    });
+    return this.login(user);
   }
 
   async login(user: UserTokenPayload) {
-    const payload = { email: user.email, sub: user.userId };
     return {
-      access_token: await this.jwtService.signAsync(payload),
+      access_token: this.signToken(user),
+      user,
     };
   }
 
@@ -51,7 +48,13 @@ export class AuthService {
     return true;
   }
 
-  async getProfile(user: UserTokenPayload) {
-    return user;
+  async getProfile(userPayload: UserTokenPayload) {
+    const user = await this.usersService.findOne(userPayload.email);
+    return { user };
+  }
+
+  signToken(user: UserTokenPayload): string {
+    const payload = { email: user.email, sub: user.userId };
+    return this.jwtService.sign(payload);
   }
 }
