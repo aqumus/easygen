@@ -7,32 +7,34 @@ import {
   Body,
   UseInterceptors,
   ClassSerializerInterceptor,
+  Response,
 } from '@nestjs/common';
-import { Request as ExpressRequest } from 'express';
+import {
+  Request as ExpressRequest,
+  Response as ExpressResponse,
+} from 'express';
 import { AuthService, UserTokenPayload } from './auth.service';
 import { LocalAuthGuard } from './guards/local-auth.guard';
 import { JwtAuthGuard } from './guards/jwt-auth.guard';
 import { SignupDto } from './auth.dto';
 import { UserEntity } from '../users/user.dto';
-import { SessionGuard } from './guards/session.guard';
-// import { TokenInterceptor } from './interceptors/token.interceptor';
+import { authCookieName } from './constants';
+import { TokenInterceptor } from './interceptors/token.interceptor';
+// import { SessionGuard } from './guards/session.guard';
 
 @Controller('auth')
 @UseInterceptors(ClassSerializerInterceptor)
 export class AuthController {
   constructor(private authService: AuthService) {}
 
-  // @UseInterceptors(TokenInterceptor)
+  @UseInterceptors(TokenInterceptor)
   @Post('signup')
-  async signup(@Body() body: SignupDto, @Request() req: ExpressRequest) {
+  async signup(@Body() body: SignupDto) {
     const singupRes = await this.authService.signup(body);
-    await new Promise<void>((resolve, reject) => {
-      req.session.save((err) => (err ? reject(err) : resolve()));
-    });
     return { ...singupRes, user: new UserEntity(singupRes.user) };
   }
 
-  // @UseInterceptors(TokenInterceptor)
+  @UseInterceptors(TokenInterceptor)
   @UseGuards(LocalAuthGuard)
   @Post('login')
   async login(@Request() req: ExpressRequest & { user: UserTokenPayload }) {
@@ -42,19 +44,23 @@ export class AuthController {
 
   @UseGuards(JwtAuthGuard)
   @Post('logout')
-  async logout(@Request() req: ExpressRequest & { user: UserTokenPayload }) {
-    await new Promise<void>((resolve, reject) => {
-      req.session.destroy((err) => (err ? reject(err) : resolve()));
-    });
-    return this.authService.logout(req.user);
+  async logout(
+    @Request() req: ExpressRequest & { user: UserTokenPayload },
+    @Response() res: ExpressResponse
+  ) {
+    // await new Promise<void>((resolve, reject) => {
+    //   req.session.destroy((err) => (err ? reject(err) : resolve()));
+    // });
+    await this.authService.logout(req.user);
+    res.cookie(authCookieName, '', { maxAge: 0 });
   }
 
-  // @UseInterceptors(TokenInterceptor)
-  @UseGuards(SessionGuard, JwtAuthGuard)
+  @UseGuards(JwtAuthGuard)
   @Get('profile')
   async getProfile(
     @Request() req: ExpressRequest & { user: UserTokenPayload }
   ) {
+    console.log('getProfile', req.user);
     const profile = await this.authService.getProfile(req.user);
     return { ...profile, user: new UserEntity(profile.user) };
   }

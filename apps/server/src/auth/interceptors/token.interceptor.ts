@@ -10,6 +10,7 @@ import { map } from 'rxjs/operators';
 
 import type { UserEntity } from '../../users/user.dto';
 import { AuthService } from '../auth.service';
+import { authCookieName } from '../constants';
 
 @Injectable()
 export class TokenInterceptor implements NestInterceptor {
@@ -24,14 +25,14 @@ export class TokenInterceptor implements NestInterceptor {
         const response = context.switchToHttp().getResponse<Response>();
         const token = this.authService.signToken(user);
 
-        response.setHeader('Authorization', `Bearer ${token}`);
-        response.cookie('connect.sid', token, {
+        response.cookie(authCookieName, token, {
           httpOnly: true,
           signed: true,
-          //   sameSite: 'strict',
+          sameSite: 'strict',
           // TODO: enable secure based on NODE_ENV
           //   secure: process.env.NODE_ENV === 'production',
           secure: false,
+          maxAge: Number(process.env.TOKEN_MAX_AGE),
         });
 
         return { user, ...rest };

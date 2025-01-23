@@ -53,8 +53,11 @@ export const LoginForm = ({ onSuccess }: LoginFormProps) => {
           </>
         )}
       </Form>
-      <div className="mt-2 flex items-center justify-end">
+      <div className="mt-2 flex items-center justify-center">
         <div className="text-sm">
+          <span className="mr-1">
+            Don&apos;t have an account?
+          </span>
           <NextLink
             href={paths.auth.signup.getHref(redirectTo)}
             className="font-medium text-blue-600 hover:text-blue-500"

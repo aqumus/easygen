@@ -35,6 +35,7 @@ export function getServerCookies() {
     .then(({ cookies }) => cookies())
     .then((cookieStore) => {
       try {
+        // console.log('cookieStore', cookieStore);
         return cookieStore
           .getAll()
           .map((c) => `${c.name}=${c.value}`)
@@ -64,6 +65,7 @@ async function fetchApi<T>(
   let cookieHeader = cookie;
   if (typeof window === 'undefined' && !cookie) {
     cookieHeader = await getServerCookies();
+    console.log('getServerCookies', cookieHeader);
   }
 
   const fullUrl = buildUrlWithParams(`${env.API_URL}${url}`, params);
