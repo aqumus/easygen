@@ -12,6 +12,10 @@ type LoginFormProps = {
   onSuccess: () => void;
 };
 
+const loginErrorMessageLabel: Record<string, string> = {
+  Unauthorized: 'Invalid email or password',
+};
+
 export const LoginForm = ({ onSuccess }: LoginFormProps) => {
   const login = useLogin({
     onSuccess,
@@ -41,23 +45,32 @@ export const LoginForm = ({ onSuccess }: LoginFormProps) => {
               error={formState.errors['password']}
               registration={register('password')}
             />
-            <div>
+            <div className="flex flex-col items-center justify-center">
+              {login.error && typeof login.error.message === 'string' && (
+                <span className="text-red-500 text-sm justify-center">
+                  {loginErrorMessageLabel[login.error.message]}
+                </span>
+              )}
               <Button
                 isLoading={login.isPending}
                 type="submit"
-                className="w-full"
+                className="w-full bg-black-500 text-white"
+                style={{
+                  backgroundColor: '#000',
+                }}
               >
-                Log in
+                {login.isPending ? 'Logging in...' : 'Log in'}
               </Button>
             </div>
           </>
         )}
       </Form>
-      <div className="mt-2 flex items-center justify-center">
-        <div className="text-sm">
-          <span className="mr-1">
-            Don&apos;t have an account?
-          </span>
+      <div
+        className="mt-2 flex items-center justify-center text-sm"
+        style={{ marginTop: '1rem', gap: '0.35rem' }}
+      >
+        <span className="mr-1">Don&apos;t have an account?</span>
+        <div className="">
           <NextLink
             href={paths.auth.signup.getHref(redirectTo)}
             className="font-medium text-blue-600 hover:text-blue-500"

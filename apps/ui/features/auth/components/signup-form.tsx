@@ -13,9 +13,12 @@ type SignupFormProps = {
   onSuccess: () => void;
 };
 
-export const SignupForm = ({
-  onSuccess,
-}: SignupFormProps) => {
+const signupErrorMessages: Record<string, string> = {
+  EMAIL_ALREADY_IN_USE: 'Email already in use',
+  TRY_AGAIN: 'Missed your request, try again',
+};
+
+export const SignupForm = ({ onSuccess }: SignupFormProps) => {
   const registering = useSignup({ onSuccess });
   const searchParams = useSearchParams();
   const redirectTo = searchParams?.get('redirectTo');
@@ -52,20 +55,37 @@ export const SignupForm = ({
               registration={register('password')}
             />
 
-            <div>
+            <div className="flex flex-col gap-2 justify-center items-center">
+              {registering.error &&
+                typeof registering.error.message === 'string' && (
+                  <span className="text-sm text-red-500">
+                    {
+                      signupErrorMessages[
+                        registering.error.message ?? 'TRY_AGAIN'
+                      ]
+                    }
+                  </span>
+                )}
               <Button
                 isLoading={registering.isPending}
                 type="submit"
-                className="w-full"
+                className="w-full text-white"
+                style={{
+                  backgroundColor: '#000',
+                }}
               >
-                Signup
+                {registering.isPending ? 'Signing up...' : 'Signup'}
               </Button>
             </div>
           </>
         )}
       </Form>
-      <div className="mt-2 flex items-center justify-end">
-        <div className="text-sm">
+      <div
+        className="mt-2 text-sm flex items-center justify-center"
+        style={{ marginTop: '1rem', gap: '0.5rem' }}
+      >
+        <span>Already have an account?</span>
+        <div className="">
           <NextLink
             href={paths.auth.login.getHref(redirectTo)}
             className="font-medium text-blue-600 hover:text-blue-500"

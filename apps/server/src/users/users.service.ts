@@ -1,37 +1,35 @@
-import { Injectable, Logger } from '@nestjs/common';
+import {
+  BadRequestException,
+  Injectable,
+  InternalServerErrorException,
+  Logger,
+} from '@nestjs/common';
+import { InjectModel } from '@nestjs/mongoose';
+import { Model } from 'mongoose';
 import { SignupDto } from '../auth/auth.dto';
-
-// This should be a real class/interface representing a user entity
-export type User = any;
+import { User, UserSchemaErrorCode } from './users.model';
 
 @Injectable()
 export class UsersService {
   private readonly logger = new Logger(UsersService.name);
-  private readonly users = [
-    {
-      userId: '1',
-      email: 'john@gmail.com',
-      password: 'changeme',
-      name: 'John Doe',
-    },
-    {
-      userId: '2',
-      email: 'maria@gmail.com',
-      password: 'guess',
-      name: 'Maria Doe',
-    },
-  ];
+
+  constructor(@InjectModel('User') private readonly userModel: Model<User>) {}
 
   async findOne(email: string): Promise<User | undefined> {
-    return this.users.find((user) => user.email === email);
+    const user = await this.userModel.findOne({ email });
+    return user ? user.toObject() : undefined;
   }
 
   async create(body: SignupDto) {
-    const user = {
-      userId: '' + (this.users.length + 1),
-      ...body,
-    };
-    this.users.push(user);
-    return user;
+    try {
+      const newUser = new this.userModel(body);
+      await newUser.save();
+      return newUser.toObject();
+    } catch (error) {
+      if (error.message.includes(UserSchemaErrorCode.EMAIL_ALREADY_IN_USE)) {
+        throw new BadRequestException(UserSchemaErrorCode.EMAIL_ALREADY_IN_USE);
+      }
+      throw new InternalServerErrorException(error.message);
+    }
   }
 }

@@ -1,6 +1,8 @@
 import { Module } from '@nestjs/common';
+import { MongooseModule } from '@nestjs/mongoose';
 import { AuthModule } from '../auth/auth.module';
 import { LoggerModule } from 'nestjs-pino';
+import { UsersModule } from '../users/users.module';
 
 @Module({
   imports: [
@@ -14,6 +16,8 @@ import { LoggerModule } from 'nestjs-pino';
         },
       },
     }),
+    MongooseModule.forRoot(process.env.MONGODB_URI),
+    UsersModule,
     AuthModule,
   ],
   controllers: [],

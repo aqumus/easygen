@@ -8,7 +8,7 @@ const saltOrRounds = 10;
 
 export type UserTokenPayload = {
   email: string;
-  userId: string;
+  id: string;
 };
 
 @Injectable()
@@ -20,6 +20,9 @@ export class AuthService {
 
   async validateUser(email: string, password: string): Promise<any> {
     const user = await this.usersService.findOne(email);
+    if (!user) {
+      return null;
+    }
     const passwordValid = await bcrypt.compare(password, user.password);
     if (user && passwordValid) {
       const { password, ...result } = user;
@@ -54,7 +57,7 @@ export class AuthService {
   }
 
   signToken(user: UserTokenPayload): string {
-    const payload = { email: user.email, sub: user.userId };
+    const payload = { email: user.email, sub: user.id };
     return this.jwtService.sign(payload);
   }
 }
