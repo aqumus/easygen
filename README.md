@@ -84,6 +84,7 @@ These targets are either [inferred automatically](https://nx.dev/concepts/inferr
 
 - [ ] Configure login workflow to use cookie based authentication and session management
 - [ ] Sanitize user `_id` in the serialised user object
+- [ ] Sanitize server request and response loggings
 - [ ] Stateless session management using mongoose-connect-session
 - [ ] Switch to fastify for the HTTP server
 - [ ] Configure NestJS to use Swc
