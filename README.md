@@ -49,7 +49,7 @@ npx nx start ui
 
 ### Hosting
 
-- To host server, make sure to add `JWT_SECRET` and `SESSION_SECRET` environment variables
+- To host server, make sure to add `JWT_SECRET` and `SESSION_SECRET`, `MONGODB_URI` environment variables
 - To host UI, make sure to add `API_URL` environment variable that would point to hosted server URL
 
 ### Miscellaneous
@@ -77,16 +77,17 @@ These targets are either [inferred automatically](https://nx.dev/concepts/inferr
 #### Backend
 
 - NestJS based API server
-- Fastify for the HTTP server
 - Passport for authentication - local and JWT strategies
 - Mongoose ORM for MongoDB integration
-- Fastify session for session management
-- Fastify cookie for cookie management
 
-### Future plans
+### Scope of improvement
 
+- [ ] Configure login workflow to use cookie based authentication and session management
+- [ ] Stateless session management using mongoose-connect-session
+- [ ] Switch to fastify for the HTTP server
 - [ ] Configure NestJS to use Swc
 - [ ] Export nest API types to frontend using swagger and openapi-generator
-- [ ] Configure login workflow to use cookie based authentication
 - [ ] Add API documentation
 - [ ] Add CI/CD
+- [ ] Add unit and integration tests
+- [ ] Add E2E tests
